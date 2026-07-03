@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -18,6 +19,7 @@ connectDB();
 
 // Mount Product Routes
 app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Base Test Route
 app.get('/', (req, res) => {
