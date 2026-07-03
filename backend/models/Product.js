@@ -1,36 +1,37 @@
 const mongoose = require('mongoose');
 
-const ProductSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Please add a product name"],
+        required: [true, 'Please add a product name'],
         trim: true
     },
     description: {
         type: String,
-        required: [true, "Please add a description"]
-    },
-    price: {
-        type: Number,
-        required: [true, "Please add a price"],
-        default: 0.0
+        required: [true, 'Please add a description']
     },
     category: {
         type: String,
-        required: [true, "Please specify a category"],
-        enum: ['Generators', 'Solar Panels', 'Spare Parts', 'Cables', 'Tools', 'Other'] 
+        required: [true, 'Please add a category (e.g., Electrical, Plumbing, Tools)']
     },
-    countInStock: {
+    price: {
         type: Number,
-        required: [true, "Please add stock quantity"],
+        required: [true, 'Please add a price'],
+        min: 0
+    },
+    stock: {
+        type: Number,
+        required: [true, 'Please add stock quantity'],
+        min: 0,
         default: 0
     },
-    imageUrl: {
+    sku: {
         type: String,
-        default: "https://via.placeholder.com/150" // Placeholder if no image is uploaded yet
+        unique: true,
+        trim: true
     }
 }, {
-    timestamps: true // Automatically adds createdAt and updatedAt fields
+    timestamps: true // Automatically creates createdAt and updatedAt fields
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Product', productSchema);
