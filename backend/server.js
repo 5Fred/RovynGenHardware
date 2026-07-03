@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 
 // Load environment variables
@@ -13,10 +13,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('🔥 MongoDB Connected Successfully to Rovyn DB!'))
-    .catch((err) => console.error('❌ Database connection error:', err));
+// Connect to MongoDB Atlas
+connectDB();
 
 // Mount Product Routes
 app.use('/api/products', productRoutes);
