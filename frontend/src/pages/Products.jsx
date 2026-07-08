@@ -233,8 +233,27 @@ const handleSubmit = async (e) => {
               </div>
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold', color: '#495057' }}>Category</label>
-                <input type="text" name="category" placeholder="e.g., Construction, Plumbing" value={formData.category} onChange={handleChange} style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '6px', border: '1px solid #ced4da' }} />
-              </div>
+<select 
+  name="category" 
+  value={formData.category || ""} 
+  onChange={handleChange} 
+  style={{ 
+    width: '100%', 
+    padding: '10px', 
+    boxSizing: 'border-box', 
+    border: '1px solid #ccc', 
+    borderRadius: '4px',
+    backgroundColor: '#fff',
+    color: '#000'
+  }}
+  required
+>
+  <option value="" disabled>-- Select a Category --</option>
+  <option value="Plumbing & Pipes">Plumbing & Pipes</option>
+  <option value="Electrical Supplies">Electrical Supplies</option>
+  <option value="Construction Materials">Construction Materials</option>
+  <option value="Paints & Finishes">Paints & Finishes</option>
+</select>              </div>
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold', color: '#495057' }}>Description *</label>
                 <input type="text" name="description" required placeholder="Short product notes" value={formData.description} onChange={handleChange} style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '6px', border: '1px solid #ced4da' }} />
