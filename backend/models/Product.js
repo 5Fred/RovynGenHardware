@@ -27,11 +27,19 @@ const productSchema = new mongoose.Schema({
     },
     sku: {
         type: String,
-        unique: true,
-        trim: true
+        trim: true,
+        // Do NOT make this unique at the field level.
+        // MongoDB treats multiple { sku: null } values as duplicates for a unique index.
+        default: undefined
     }
 }, {
     timestamps: true // Automatically creates createdAt and updatedAt fields
 });
+
+// Partial unique index: enforce uniqueness only when sku is a real string.
+productSchema.index(
+    { sku: 1 },
+    { unique: true, partialFilterExpression: { sku: { $type: 'string' } } }
+);
 
 module.exports = mongoose.model('Product', productSchema);

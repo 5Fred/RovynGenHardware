@@ -57,9 +57,8 @@ const getOrders = async (req, res) => {
 // @access  Public
 const getSalesReport = async (req, res) => {
     try {
-        const orders = await Order.find();
+        const orders = await Order.find().populate('items.product', 'name');
         
-        // Calculate total revenue and total transactions
         const totalTransactions = orders.length;
         const totalRevenue = orders.reduce((sum, order) => sum + order.totalAmount, 0);
 
@@ -67,7 +66,7 @@ const getSalesReport = async (req, res) => {
             success: true,
             totalTransactions,
             totalRevenue,
-            recentOrders: orders.slice(-5).reverse() // Sends back the last 5 transactions
+            recentOrders: orders.slice(-5).reverse()
         });
     } catch (error) {
         res.status(500).json({ message: error.message });

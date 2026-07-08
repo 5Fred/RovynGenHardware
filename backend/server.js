@@ -1,23 +1,33 @@
+const dns = require('dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
+const mongoose = require('mongoose');
+// ... rest of your server code
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+
+// Route Imports
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const authRoutes = require('./routes/authRoutes');
 
-// Load environment variables
+// Load environment variables right away
 dotenv.config();
 
+// Initialize the Express App instance
 const app = express();
 
-// Middleware
+// Global Middleware
 app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB Atlas
 connectDB();
 
-// Mount Product Routes
+// Mount API Route Middlewares
+app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
