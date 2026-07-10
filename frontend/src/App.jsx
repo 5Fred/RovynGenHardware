@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 
 // Public Components & Pages
@@ -12,6 +12,7 @@ import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
 import NewSale from './pages/NewSale';
+import Checkout from './pages/Checkout';
 
 // 1. PUBLIC LAYOUT WRAPPER
 // Receives cart and setCart to feed the Navbar, and passes them to the LandingPage via context
@@ -51,6 +52,22 @@ function App() {
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]); // Will hold products fetched from MongoDB
   const [filteredProducts, setFilteredProducts] = useState([]); // Filtered products for display
+
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/products'); // Replace with your exact backend products route if different
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      setProducts(data);
+      setFilteredProducts(data); // So search and landing page matching works on load
+    } catch (error) {
+      console.error("Error fetching products from backend:", error);
+    }
+  };
+
+  fetchProducts();
+}, []);
 
   return (
     <Router>

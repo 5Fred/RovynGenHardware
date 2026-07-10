@@ -41,17 +41,22 @@ export default function LandingPage() {
   ];
 
   // Helper function to safely extract products belonging to each specific section
-  const getProductsForCategory = (cat) => {
-    if (!products || products.length === 0) return [];
-    return products.filter(p => {
-      const productCat = (p.category || '').toLowerCase();
-      const productName = (p.name || '').toLowerCase();
-      
-      // Match if category matches exactly, or contains any core keywords
-      return productCat === cat.id || 
-             cat.matchKeywords.some(keyword => productCat.includes(keyword) || productName.includes(keyword));
-    });
-  };
+const getProductsForCategory = (cat) => {
+  if (!products || products.length === 0) return [];
+  
+  return products.filter(p => {
+    const productCat = (p.category || '').toLowerCase();
+    const productName = (p.name || '').toLowerCase();
+    const targetCatId = (cat.id || '').toLowerCase();
+
+    // Match if category matches exactly, or contains any core keywords
+    return productCat === targetCatId || 
+           (cat.matchKeywords && cat.matchKeywords.some(keyword => {
+             const cleanKeyword = keyword.toLowerCase();
+             return productCat.includes(cleanKeyword) || productName.includes(cleanKeyword);
+           }));
+  });
+};
 
   // Add to Cart Logic Functionality
   const handleAddToCart = (product) => {
@@ -180,8 +185,8 @@ export default function LandingPage() {
                   
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
                     <span style={{ fontSize: '12px', fontWeight: '600', color: '#1e3a8a', backgroundColor: '#eff6ff', padding: '4px 10px', borderRadius: '12px' }}>
-                      {associatedItems.length} Products Available
-                    </span>
+    {associatedItems.length} Products Available
+</span>
                     <span style={{ fontSize: '14px', color: '#64748b', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
                       ▼
                     </span>
