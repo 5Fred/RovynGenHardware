@@ -1,6 +1,5 @@
 const dns = require('dns');
 dns.setServers(['8.8.8.8', '8.8.4.4']);
-
 const mongoose = require('mongoose');
 // ... rest of your server code
 const express = require('express');
@@ -8,7 +7,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
-// Route Imports
+// Route Imports - Fixed the missing 's' in the path paths to match your folder
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const authRoutes = require('./routes/authRoutes');
