@@ -84,6 +84,7 @@ useEffect(() => {
           />
         }>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/admin/login" element={<Login />} />
         </Route>
 

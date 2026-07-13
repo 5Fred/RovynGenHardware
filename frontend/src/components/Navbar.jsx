@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Navbar({ products = [], setFilteredProducts, cart = [], setCart }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -106,7 +107,7 @@ export default function Navbar({ products = [], setFilteredProducts, cart = [], 
         <a href="#" style={{ textDecoration: 'none', color: '#1e3a8a', fontWeight: '600', fontSize: '14px' }}>Home</a>
         <a href="#contact-section" style={{ textDecoration: 'none', color: '#475569', fontWeight: '500', fontSize: '14px', transition: 'color 0.2s' }}>Contact Us</a>
         
-        {/* CART BUTTON WITH OVERLAY */}
+       {/* CART BUTTON WITH OVERLAY */}
         <div style={{ position: 'relative' }}>
           <button 
             onClick={() => setIsCartOpen(!isCartOpen)}
@@ -167,25 +168,35 @@ export default function Navbar({ products = [], setFilteredProducts, cart = [], 
                     <span>Total:</span>
                     <span>KSh {cartTotal.toLocaleString()}</span>
                   </div>
-                  <button style={{
-                    width: '100%',
-                    backgroundColor: '#1e3a8a',
-                    color: '#white',
-                    border: 'none',
-                    padding: '10px',
-                    borderRadius: '6px',
-                    marginTop: '12px',
-                    fontWeight: '600',
-                    cursor: 'pointer'
-                  }}>
+                  
+                  {/* LINKED CHECKOUT BUTTON */}
+                  <Link 
+                    to="/checkout"
+                    onClick={() => setIsCartOpen(false)}
+                    style={{
+                      display: 'block',
+                      textAlign: 'center',
+                      textDecoration: 'none',
+                      width: '100%',
+                      backgroundColor: '#1e3a8a',
+                      color: 'white',
+                      border: 'none',
+                      padding: '10px',
+                      borderRadius: '6px',
+                      marginTop: '12px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      boxSizing: 'border-box'
+                    }}
+                  >
                     Proceed to Deal Time
-                  </button>
+                  </Link>
                 </>
               )}
             </div>
           )}
         </div>
-
+        
         {/* STAFF PORTAL BUTTON */}
         <button 
           onClick={handleStaffPortalClick}
