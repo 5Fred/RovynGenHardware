@@ -5,21 +5,40 @@ export default function Navbar({ products = [], setFilteredProducts, cart = [], 
   const [searchTerm, setSearchTerm] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // 1. Handle Live Search Filtering
+// 1. Tracks input text and resets list to show all items if cleared
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    
-    // Assuming products are passed as props, filter them live
-    if (setFilteredProducts) {
-      const filtered = products.filter(product =>
-        product.name.toLowerCase().includes(value.toLowerCase()) ||
-        product.category.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredProducts(filtered);
+
+    if (!value.trim() && setFilteredProducts) {
+      setFilteredProducts(products);
     }
   };
 
+  // 2. Triggers the filtering when the Search button is clicked or Enter is pressed
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    if (!setFilteredProducts) return;
+
+    if (!searchTerm.trim()) {
+      setFilteredProducts(products);
+      return;
+    }
+
+    // This is the ONLY place product is defined (as an argument inside the filter loop)
+    const filtered = products.filter(product => {
+      const productName = product.name || product.title || '';
+      const productCategory = product.category || '';
+
+      const nameMatch = productName.toLowerCase().includes(searchTerm.toLowerCase());
+      const categoryMatch = productCategory.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return nameMatch || categoryMatch;
+    });
+
+    setFilteredProducts(filtered);
+  };
   // 2. Cart Management Functions
   const removeFromCart = (productId) => {
     setCart(cart.filter(item => item.id !== productId));
@@ -69,39 +88,68 @@ export default function Navbar({ products = [], setFilteredProducts, cart = [], 
         </div>
       </div>
 
-      {/* LIVE SEARCH BAR */}
-      <div style={{ flex: '0 1 450px', margin: '0 24px', position: 'relative' }}>
-        <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '14px' }}>
-          🔍
-        </span>
-        <input 
-          type="text" 
-          value={searchTerm}
-          onChange={handleSearch}
-          placeholder="Search cement, pipes, paint, nails..."
+      {/* FIXED BEAUTIFUL SEARCH BAR & BUTTON */}
+      <form onSubmit={handleSearchSubmit} style={{ 
+        flex: '0 1 520px', 
+        margin: '0 24px', 
+        display: 'flex', 
+        alignItems: 'center',
+        gap: '12px' 
+      }}>
+        <div style={{ position: 'relative', flex: 1 }}>
+          <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '14px' }}>
+            🔍
+          </span>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Search cement, pipes, paint, nails..."
+            style={{
+              width: '100%',
+              padding: '10px 16px 10px 45px',
+              borderRadius: '24px',
+              border: '1px solid #cbd5e1',
+              backgroundColor: '#f8fafc',
+              fontSize: '14px',
+              outline: 'none',
+              transition: 'all 0.2s',
+              boxSizing: 'border-box'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#1e3a8a';
+              e.target.style.backgroundColor = '#ffffff';
+              e.target.style.boxShadow = '0 0 0 3px rgba(30, 58, 138, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#cbd5e1';
+              e.target.style.backgroundColor = '#f8fafc';
+              e.target.style.boxShadow = 'none';
+            }}
+          />
+        </div>
+        
+        <button 
+          type="submit"
           style={{
-            width: '100%',
-            padding: '10px 16px 10px 45px',
+            backgroundColor: '#1e3a8a',
+            color: '#fff',
+            border: 'none',
+            padding: '10px 24px',
             borderRadius: '24px',
-            border: '1px solid #cbd5e1',
-            backgroundColor: '#f8fafc',
-            fontSize: '14px',
-            outline: 'none',
-            transition: 'all 0.2s'
+            fontSize: '13px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+            boxShadow: '0 2px 4px rgba(30, 58, 138, 0.15)',
+            flexShrink: 0
           }}
-          onFocus={(e) => {
-            e.target.style.borderColor = '#1e3a8a';
-            e.target.style.backgroundColor = '#ffffff';
-            e.target.style.boxShadow = '0 0 0 3px rgba(30, 58, 138, 0.1)';
-          }}
-          onBlur={(e) => {
-            e.target.style.borderColor = '#cbd5e1';
-            e.target.style.backgroundColor = '#f8fafc';
-            e.target.style.boxShadow = 'none';
-          }}
-        />
-      </div>
-
+          onMouseEnter={(e) => e.target.style.backgroundColor = '#172554'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#1e3a8a'}
+        >
+          Search
+        </button>
+      </form>
       {/* NAVIGATION LINKS & PORTAL */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
         <a href="#" style={{ textDecoration: 'none', color: '#1e3a8a', fontWeight: '600', fontSize: '14px' }}>Home</a>
