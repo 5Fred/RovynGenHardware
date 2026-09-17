@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useOutletContext, useNavigate } from 'react{router-dom}';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import API from '../api/api';
 
 export default function Checkout() {
@@ -41,7 +41,7 @@ export default function Checkout() {
       alert("Something went wrong processing your order.");
     }
   };
-  
+
   return (
     <div style={{ display: 'flex', maxWidth: '1200px', margin: '0 auto', padding: '40px 20px', gap: '40px' }}>
       {/* Left Column: Form Details */}

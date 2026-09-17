@@ -9,7 +9,6 @@ function Dashboard() {
   useEffect(() => {
     const fetchSalesReport = async () => {
       try {
-        // Hits http://localhost:5000/api/orders/report
         const response = await API.get('/orders/report');
         setSalesData(response.data);
         setLoading(false);
