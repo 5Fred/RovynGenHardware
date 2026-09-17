@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react{router-dom}';
+import API from '../api/api';
 
 export default function Checkout() {
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const { cart, setCart } = useOutletContext();
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     emailOrPhone: '',
     firstName: '',
@@ -17,51 +17,31 @@ export default function Checkout() {
 
   // Calculate Subtotal
   const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-  const shippingFee = subtotal >= 5000 ? 0 : 300; 
+  const shippingFee = subtotal > 5000 ? 0 : 300;
   const total = subtotal + shippingFee;
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handlePlaceOrder = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (cart.length === 0) return alert("Your cart is empty!");
-
-    const orderData = {
-      customer: formData,
-      items: cart.map(item => ({
-        productId: item._id || item.id,
-        name: item.name,
-        quantity: item.quantity,
-        price: item.price
-      })),
-      subtotal,
-      shippingFee,
-      total,
-      status: 'Pending'
-    };
+    const orderData = { ...formData, cart, total };
 
     try {
-      // POST the order details to your backend Node.js server
-      const response = await fetch(`${API_URL}/api/orders`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderData)
-      });
+      const response = await API.post('/orders', orderData);
 
-      if (response.ok) {
+      if (response.status === 200 || response.status === 201) {
         alert("Order placed successfully!");
-        setCart([]); // Clear the cart state globally
-        navigate('/'); // Redirect back to landing page
-      } else {
-        alert("Something went wrong processing your order.");
+        setCart([]);
+        navigate('/');
       }
     } catch (error) {
       console.error("Order processing error:", error);
+      alert("Something went wrong processing your order.");
     }
   };
-
+  
   return (
     <div style={{ display: 'flex', maxWidth: '1200px', margin: '0 auto', padding: '40px 20px', gap: '40px' }}>
       {/* Left Column: Form Details */}
