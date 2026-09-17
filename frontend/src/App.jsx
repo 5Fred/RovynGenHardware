@@ -13,6 +13,7 @@ import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
 import NewSale from './pages/NewSale';
 import Checkout from './pages/Checkout';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // 1. PUBLIC LAYOUT WRAPPER
 // Receives cart and setCart to feed the Navbar, and passes them to the LandingPage via context
@@ -54,9 +55,10 @@ function App() {
   const [filteredProducts, setFilteredProducts] = useState([]); // Filtered products for display
 
 useEffect(() => {
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products'); // Replace with your exact backend products route if different
+      const response = await fetch(`${API_URL}/api/products`); // Replace with your exact backend products route if different
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       setProducts(data);

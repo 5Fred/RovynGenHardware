@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 
 export default function Checkout() {
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const { cart, setCart } = useOutletContext();
   const navigate = useNavigate();
   
@@ -43,7 +44,7 @@ export default function Checkout() {
 
     try {
       // POST the order details to your backend Node.js server
-      const response = await fetch('http://localhost:5000/api/orders', {
+      const response = await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData)

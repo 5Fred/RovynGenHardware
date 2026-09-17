@@ -1,11 +1,6 @@
-import axios from 'axios';
 
-// Connects directly to your Express server running on port 5000
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api', 
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: `${API_URL}/api`,
 });
-
-export default API;
